@@ -1,6 +1,6 @@
-# <a name="title"></a> Busser::RunnerPlugin::Serverspec
+# <a name="title"></a> Busser::RunnerPlugin::Rspec
 
-A Busser runner plugin for Serverspec
+A Busser runner plugin for Rspec
 
 ## <a name="installation"></a> Installation and Setup
 
@@ -8,15 +8,13 @@ Please read the Busser [plugin usage][plugin_usage] page for more details.
 
 ## <a name="usage"></a> Usage
 
-Please put test files into [COOKBOOK]/test/integration/[SUITES]/serverspec/
+Please put test files into [COOKBOOK]/test/integration/[SUITES]/rspec/
 
 ```cookbook
 `-- test
     `-- integration
         `-- default
-            `-- serverspec
-                |-- localhost
-                |   `-- httpd_spec.rb
+            `-- rspec
                 `-- spec_helper.rb
 ```
 
@@ -37,15 +35,10 @@ example:
 
 ## <a name="authors"></a> Authors
 
-Created and maintained by [HIGUCHI Daisuke][author] (<d-higuchi@creationline.com>)
+Created and maintained by [Adam Jacob][author] (<adam@opscode.com>)
+Based on busser-serverspec, created and maintained by [HIGUCHI Daisuke][author] (<d-higuchi@creationline.com>)
 
 ## <a name="license"></a> License
 
 Apache 2.0 (see [LICENSE][license])
 
-
-[author]:           https://github.com/cl-lab-k
-[issues]:           https://github.com/cl-lab-k/busser-serverspec/issues
-[license]:          https://github.com/cl-lab-k/busser-serverspec/blob/master/LICENSE
-[repo]:             https://github.com/cl-lab-k/busser-serverspec
-[plugin_usage]:     http://docs.kitchen-ci.org/busser/plugin-usage
