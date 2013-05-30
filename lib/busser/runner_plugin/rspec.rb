@@ -17,6 +17,7 @@
 # limitations under the License.
 
 require 'busser/runner_plugin'
+require 'rubygems'
 
 # A Busser runner plugin for Rspec.
 #
@@ -43,6 +44,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
     if File.exists?(File.join(rspec_path, "Gemfile"))
       chef_apply do
         execute "bundle install" do
+          environment(:PATH => Gem.binpath)
           cwd rspec_path
         end
       end
