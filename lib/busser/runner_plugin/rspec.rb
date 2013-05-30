@@ -25,11 +25,30 @@ require 'busser/runner_plugin'
 class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
   postinstall do
     install_gem("rspec", "<= 2.13.1")
+    install_gem("bundler")
+
+    rspec_path = suite_path('rspec')
+    setup_file = File.join(rspec_path, "setup-recipe.rb")
+
+    if File.exists?(setup_file)
+      chef_apply do
+        eval(IO.read(setup_file))
+      end
+    end
   end
 
-  def test
-    runner = File.join(File.dirname(__FILE__), %w{.. rspec runner.rb})
 
+  def test
+    if File.exists?(File.join(suite_path('rspec').to_s, "Gemfile"))
+      Dir.chdir(suite_path('rspec').to_s) do
+        chef_apply do
+          execute "bundle install" do
+            cwd suite_path('rspec').to_s
+          end
+        end
+      end
+    end
+    runner = File.join(File.dirname(__FILE__), %w{.. rspec runner.rb})
     run_ruby_script!("#{runner} #{suite_path('rspec').to_s}")
   end
 end
