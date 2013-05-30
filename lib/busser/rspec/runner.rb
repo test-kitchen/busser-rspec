@@ -17,16 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'rake'
 require 'bundler/setup'
-require 'rspec/core/rake_task'
-require 'rbconfig'
+require 'rspec/core'
 
-base_path = File.expand_path(ARGV.shift)
-
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.rspec_path = RbConfig::CONFIG['bindir'] + '/rspec'
-  t.ruby_opts = [ "-I#{base_path}" ]
-  t.pattern = "#{base_path}/**/*_spec.rb"
-end
-Rake::Task["spec"].invoke
+exit RSpec::Core::Runner.run(ARGV)

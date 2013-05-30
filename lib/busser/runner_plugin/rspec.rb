@@ -27,29 +27,28 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
   postinstall do
     install_gem("rspec", "<= 2.13.1")
     install_gem("bundler")
-
-    rspec_path = suite_path('rspec').to_s
-    setup_file = File.join(rspec_path, "setup-recipe.rb")
-
-    if File.exists?(setup_file)
-      chef_apply do
-        eval(IO.read(setup_file))
-      end
-    end
   end
-
 
   def test
     rspec_path = suite_path('rspec').to_s
-    if File.exists?(File.join(rspec_path, "Gemfile"))
-      chef_apply do
-        execute "bundle install" do
-          environment(:PATH => Gem.binpath)
-          cwd rspec_path
-        end
+
+    chef_apply do
+      setup_file = File.join(rspec_path, "setup-recipe.rb")
+
+      if File.exists?(setup_file)
+        eval(IO.read(setup_file))
+      end
+
+      execute "bundle install" do
+        environment("PATH" => Gem.bindir)
+        cwd rspec_path
+        only_if { File.exists?(File.join(rspec_path, "Gemfile")) }
       end
     end
-    runner = File.join(File.dirname(__FILE__), %w{.. rspec runner.rb})
-    run_ruby_script!("#{runner} #{suite_path('rspec').to_s}")
+
+    Dir.chdir(rspec_path) do
+      runner = File.expand_path(File.join(File.dirname(__FILE__), "..", "rspec", "runner.rb"))
+      run_ruby_script!("#{runner} -I #{rspec_path} -I #{rspec_path}/lib #{rspec_path}")
+    end
   end
 end
