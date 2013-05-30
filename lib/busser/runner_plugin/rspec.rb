@@ -40,7 +40,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
       end
 
       execute "bundle install --local || bundle install" do
-        environment("PATH" => Gem.bindir)
+        environment("PATH" => "#{ENV['PATH']}:#{Gem.bindir}")
         cwd rspec_path
         only_if { File.exists?(File.join(rspec_path, "Gemfile")) }
       end
