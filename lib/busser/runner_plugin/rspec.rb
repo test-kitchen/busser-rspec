@@ -27,7 +27,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
     install_gem("rspec", "<= 2.13.1")
     install_gem("bundler")
 
-    rspec_path = suite_path('rspec')
+    rspec_path = suite_path('rspec').to_s
     setup_file = File.join(rspec_path, "setup-recipe.rb")
 
     if File.exists?(setup_file)
@@ -39,12 +39,11 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
 
 
   def test
-    if File.exists?(File.join(suite_path('rspec').to_s, "Gemfile"))
-      Dir.chdir(suite_path('rspec').to_s) do
-        chef_apply do
-          execute "bundle install" do
-            cwd suite_path('rspec').to_s
-          end
+    rspec_path = suite_path('rspec').to_s
+    if File.exists?(File.join(rspec_path, "Gemfile"))
+      chef_apply do
+        execute "bundle install" do
+          cwd rspec_path
         end
       end
     end
