@@ -6,8 +6,8 @@ require 'busser/rspec/version'
 Gem::Specification.new do |spec|
   spec.name          = 'busser-rspec'
   spec.version       = Busser::Rspec::VERSION
-  spec.authors       = ['HIGUCHI Daisuke']
-  spec.email         = ['d-higuchi@creationline.com']
+  spec.authors       = ['Adam Jacob']
+  spec.email         = ['adam@opscode.com']
   spec.description   = %q{A Busser runner plugin for RSpec}
   spec.summary       = spec.description
   spec.homepage      = 'https://github.com/adamhjk/busser-rspec'

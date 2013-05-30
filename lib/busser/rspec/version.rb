@@ -21,6 +21,6 @@ module Busser
   module Rspec
 
     # Version string for the Rspec Busser runner plugin
-    VERSION = "0.1.0"
+    VERSION = "0.2.0"
   end
 end
