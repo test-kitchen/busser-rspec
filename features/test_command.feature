@@ -5,27 +5,37 @@ Feature: Test command
 
   Background:
     Given a test BUSSER_ROOT directory named "busser-rspec-test"
+    And a sandboxed GEM_HOME directory named "busser-rspec-gem-home"
     When I successfully run `busser plugin install busser-rspec --force-postinstall`
     Given a suite directory named "rspec"
 
   Scenario: A passing test suite
-    Given a file in suite "rspec" named "<YOUR_FILE>" with:
+    Given a file in suite "rspec" named "default_spec.rb" with:
     """
-    TEST FILE CONTENT
-
-    A good test might be a simple passing statement
+    describe 'default' do
+      it 'succeed' do
+      end
+    end
     """
     When I run `busser test rspec`
-    Then I should verify some output for the rspec plugin
+    Then the output should contain:
+    """
+    1 example, 0 failures
+    """
     And the exit status should be 0
 
   Scenario: A failing test suite
-    Given a file in suite "rspec" named "<YOUR_FILE>" with:
+    Given a file in suite "rspec" named "default_spec.rb" with:
     """
-    TEST FILE CONTENT
-
-    A good test might be a failing test case, raised exception, etc.
+    describe 'default' do
+      it 'fail' do
+        raise
+      end
+    end
     """
     When I run `busser test rspec`
-    Then I should verify some output for the rspec plugin
+    Then the output should contain:
+    """
+    1 example, 1 failure
+    """
     And the exit status should not be 0
