@@ -25,7 +25,7 @@ require 'rubygems'
 #
 class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
   postinstall do
-    install_gem("rspec", "<= 2.13.1")
+    install_gem("rspec")
     install_gem("bundler")
   end
 
