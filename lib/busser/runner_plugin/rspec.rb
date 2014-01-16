@@ -32,21 +32,17 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
   def test
     rspec_path = suite_path('rspec').to_s
 
-    chef_apply do
-      setup_file = File.join(rspec_path, "setup-recipe.rb")
-
-      if File.exists?(setup_file)
-        eval(IO.read(setup_file))
-      end
-
-      execute "bundle install --local || bundle install" do
-        environment("PATH" => "#{ENV['PATH']}:#{Gem.bindir}")
-        cwd rspec_path
-        only_if { File.exists?(File.join(rspec_path, "Gemfile")) }
-      end
-    end
+    setup_file = File.join(rspec_path, "setup-recipe.rb")
 
     Dir.chdir(rspec_path) do
+      if File.exists?(setup_file) && File.exists?("/opt/chef/bin/chef-apply")
+        run("/opt/chef/bin/chef-apply #{setup_file}")
+      end
+
+      if File.exists?(File.join(rspec_path, "Gemfile"))
+        run("env PATH=#{ENV['PATH']}:#{Gem.bindir} bundle install --local || bundle install")
+      end
+
       runner = File.expand_path(File.join(File.dirname(__FILE__), "..", "rspec", "runner.rb"))
       run_ruby_script!("#{runner} -I #{rspec_path} -I #{rspec_path}/lib #{rspec_path}")
     end
