@@ -35,7 +35,10 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
     setup_file = File.join(rspec_path, "setup-recipe.rb")
 
     Dir.chdir(rspec_path) do
-      if File.exists?(setup_file) && File.exists?("/opt/chef/bin/chef-apply")
+      if File.exists?(setup_file)
+        if !File.exists?("/opt/chef/bin/chef-apply")
+          raise "You have a chef setup file at #{setup_file}, but /opt/chef/bin/chef-apply does not if exist"
+        end
         run("/opt/chef/bin/chef-apply #{setup_file}")
       end
 
