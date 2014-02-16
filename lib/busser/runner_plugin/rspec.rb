@@ -35,19 +35,19 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
     setup_file = File.join(rspec_path, "setup-recipe.rb")
 
     Dir.chdir(rspec_path) do
-      if File.exists?(setup_file)
-        if !File.exists?("/opt/chef/bin/chef-apply")
-          raise "You have a chef setup file at #{setup_file}, but /opt/chef/bin/chef-apply does not if exist"
-        end
-        # avoid run() here which runs with bundler context
-        system("/opt/chef/bin/chef-apply #{setup_file}")
-      end
 
       if File.exists?(File.join(rspec_path, "Gemfile"))
         # Bundle install local completes quickly if the gems are already found locally
         # it fails if it needs to talk to the internet. The || below is the fallback
         # to the internet-enabled version. It's a speed optimization.
         run("PATH=#{ENV['PATH']}:#{Gem.bindir}; bundle install --local || bundle install")
+      end
+
+      if File.exists?(setup_file)
+        if !File.exists?("/opt/chef/bin/chef-apply")
+          raise "You have a chef setup file at #{setup_file}, but /opt/chef/bin/chef-apply does not if exist"
+        end
+        run("/opt/chef/bin/chef-apply #{setup_file}")
       end
 
       runner = File.expand_path(File.join(File.dirname(__FILE__), "..", "rspec", "runner.rb"))
