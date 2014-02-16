@@ -39,7 +39,8 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
         if !File.exists?("/opt/chef/bin/chef-apply")
           raise "You have a chef setup file at #{setup_file}, but /opt/chef/bin/chef-apply does not if exist"
         end
-        run("/opt/chef/bin/chef-apply #{setup_file}")
+        # avoid run() here which runs with bundler context
+        system("/opt/chef/bin/chef-apply #{setup_file}")
       end
 
       if File.exists?(File.join(rspec_path, "Gemfile"))
