@@ -51,7 +51,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
       end
 
       runner = File.expand_path(File.join(File.dirname(__FILE__), "..", "rspec", "runner.rb"))
-      run_ruby_script!("#{runner} -I #{rspec_path} -I #{rspec_path}/lib #{rspec_path}")
+      run_ruby_script!("#{runner} --format documentation -I #{rspec_path} -I #{rspec_path}/lib #{rspec_path}")
     end
   end
 end
