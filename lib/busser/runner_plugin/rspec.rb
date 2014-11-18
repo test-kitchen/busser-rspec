@@ -40,7 +40,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
         # Bundle install local completes quickly if the gems are already found locally
         # it fails if it needs to talk to the internet. The || below is the fallback
         # to the internet-enabled version. It's a speed optimization.
-        run("PATH=#{ENV['PATH']}:#{Gem.bindir}; bundle install --local || bundle install")
+        run("#{Gem.bindir}/bundle install --local || #{Gem.bindir}/bundle install")
       end
 
       if File.exists?(setup_file)
