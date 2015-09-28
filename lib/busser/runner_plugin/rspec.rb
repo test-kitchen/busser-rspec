@@ -36,11 +36,17 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
 
     Dir.chdir(rspec_path) do
 
-      if File.exists?(File.join(rspec_path, "Gemfile"))
+      # Referred from busser-serverspec
+      gemfile_path = File.join(rspec_path, 'Gemfile')
+      if File.exists?(gemfile_path)
         # Bundle install local completes quickly if the gems are already found locally
         # it fails if it needs to talk to the internet. The || below is the fallback
         # to the internet-enabled version. It's a speed optimization.
-        run("#{Gem.bindir}/bundle install --local || #{Gem.bindir}/bundle install")
+        banner('Bundle Installing..')
+        ENV['PATH'] = [ENV['PATH'], Gem.bindir, RbConfig::CONFIG['bindir']].join(File::PATH_SEPARATOR)
+        bundle_exec = "#{File.join(RbConfig::CONFIG['bindir'], 'ruby')} " +
+          "#{File.join(Gem.bindir, 'bundle')} install --gemfile #{gemfile_path}"
+        run("#{bundle_exec} --local || #{bundle_exec}")
       end
 
       if File.exists?(setup_file)
