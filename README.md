@@ -17,7 +17,10 @@ Please put test files into [COOKBOOK]/test/integration/[SUITES]/rspec/
         `-- default
            `-- rspec
               `-- spec_helper.rb
+              `-- Gemfile
 ```
+
+You can specify your own test gem dependencies with a `Gemfile` under the `rspec` path, like this: `test/integration/<suite>/rspec/Gemfile`. Don't forget to put `gem "rspec"` there!
 
 ## Development
 
