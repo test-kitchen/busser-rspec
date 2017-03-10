@@ -34,6 +34,18 @@ RSpec.configure do |config|
   config.add_formatter "documentation"
 ```
 
+## How do I ... ?
+
+### Change the rspec formatter?
+
+You may be familar with using the `rspec -f` flag to change the rspec formatter. RSpec also offers a way to set the formatter from your specs:
+
+```ruby
+RSpec.configure do |config|
+  # The same as `rspec -f documentation`
+  config.add_formatter "documentation"
+```
+
 ## Development
 
 * Source hosted at [GitHub](https://github.com/opscode/busser-rspec)
