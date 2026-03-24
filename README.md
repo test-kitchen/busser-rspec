@@ -1,5 +1,7 @@
 # Busser::RunnerPlugin::Rspec
 
+[![Hypercommit](https://img.shields.io/badge/Hypercommit-DB2475)](https://hypercommit.com/busser-rspec)
+
 A Busser runner plugin for Rspec
 
 ## Status
