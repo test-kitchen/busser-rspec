@@ -1,5 +1,7 @@
 # Busser::RunnerPlugin::Rspec
 
+[![Gem Version](https://badge.fury.io/rb/busser-rspec.svg)](https://badge.fury.io/rb/busser-rspec)
+
 A Busser runner plugin for Rspec
 
 ## Status
