@@ -1,5 +1,5 @@
-require 'aruba/cucumber'
-require 'busser/cucumber'
+require "aruba/cucumber"
+require "busser/cucumber"
 
 Before do
   @aruba_timeout_seconds = 20

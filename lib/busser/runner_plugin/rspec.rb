@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 #
 # Author:: HIGUCHI Daisuke (<d-higuchi@creationline.com>)
 #
@@ -16,8 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'busser/runner_plugin'
-require 'rubygems'
+require "busser/runner_plugin"
+require "rubygems" unless defined?(Gem)
 
 # A Busser runner plugin for Rspec.
 #
@@ -30,29 +29,30 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
   end
 
   def test
-    rspec_path = suite_path('rspec').to_s
+    rspec_path = suite_path("rspec").to_s
 
     setup_file = File.join(rspec_path, "setup-recipe.rb")
 
     Dir.chdir(rspec_path) do
 
       # Referred from busser-serverspec
-      gemfile_path = File.join(rspec_path, 'Gemfile')
-      if File.exists?(gemfile_path)
+      gemfile_path = File.join(rspec_path, "Gemfile")
+      if File.exist?(gemfile_path)
         # Bundle install local completes quickly if the gems are already found locally
         # it fails if it needs to talk to the internet. The || below is the fallback
         # to the internet-enabled version. It's a speed optimization.
-        banner('Bundle Installing..')
-        ENV['PATH'] = [ENV['PATH'], Gem.bindir, RbConfig::CONFIG['bindir']].join(File::PATH_SEPARATOR)
-        bundle_exec = "#{File.join(RbConfig::CONFIG['bindir'], 'ruby')} " +
-          "#{File.join(Gem.bindir, 'bundle')} install --gemfile #{gemfile_path}"
+        banner("Bundle Installing..")
+        ENV["PATH"] = [ENV["PATH"], Gem.bindir, RbConfig::CONFIG["bindir"]].join(File::PATH_SEPARATOR)
+        bundle_exec = "#{File.join(RbConfig::CONFIG["bindir"], "ruby")} " +
+          "#{File.join(Gem.bindir, "bundle")} install --gemfile #{gemfile_path}"
         run("#{bundle_exec} --local || #{bundle_exec}")
       end
 
-      if File.exists?(setup_file)
-        if !File.exists?("/opt/chef/bin/chef-apply")
+      if File.exist?(setup_file)
+        unless File.exist?("/opt/chef/bin/chef-apply")
           raise "You have a chef setup file at #{setup_file}, but /opt/chef/bin/chef-apply does not if exist"
         end
+
         run("/opt/chef/bin/chef-apply #{setup_file}")
       end
 

@@ -5,6 +5,7 @@ require 'busser/rspec/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'busser-rspec'
+  spec.required_ruby_version = ">= 3.1"
   spec.version       = Busser::Rspec::VERSION
   spec.authors       = ['Adam Jacob']
   spec.email         = ['adam@opscode.com']
@@ -25,7 +26,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'aruba'
-  spec.add_development_dependency 'cane'
-  spec.add_development_dependency 'tailor'
   spec.add_development_dependency 'countloc'
 end

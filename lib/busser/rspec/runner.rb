@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-# -*- encoding: utf-8 -*-
 #
 # Author:: HIGUCHI Daisuke (<d-higuchi@creationline.com>)
 #
@@ -17,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'bundler/setup'
-require 'rspec/core'
+require "bundler/setup"
+require "rspec/core"
 
 exit RSpec::Core::Runner.run(ARGV)
