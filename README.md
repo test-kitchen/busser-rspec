@@ -14,7 +14,7 @@ Please read the Busser [plugin usage](plugin_usage) page for more details.
 
 Please put test files into [COOKBOOK]/test/integration/[SUITES]/rspec/
 
-```
+```text
 -- [COOKBOOK]
   `-- test
      `-- integration
@@ -55,9 +55,9 @@ example:
 
 ## Authors
 
-Created and maintained by Adam Jacob (adam@opscode.com)
+Created and maintained by Adam Jacob (<adam@opscode.com>)
 
-Based on [busser-serverspec](https://github.com/cl-lab-k/busser-serverspec), created and maintained by HIGUCHI Daisuke (d-higuchi@creationline.com)
+Based on [busser-serverspec](https://github.com/cl-lab-k/busser-serverspec), created and maintained by HIGUCHI Daisuke (<d-higuchi@creationline.com>)
 
 ## License
 
