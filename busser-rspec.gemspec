@@ -26,5 +26,4 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'aruba'
-  spec.add_development_dependency 'countloc'
 end
