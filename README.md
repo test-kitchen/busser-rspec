@@ -30,7 +30,7 @@ You can specify your own test gem dependencies with a `Gemfile` under the `rspec
 
 ### Change the rspec formatter?
 
-You may be familar with using the `rspec -f` flag to change the rspec formatter. RSpec also offers a way to set the formatter from your specs:
+You may be familiar with using the `rspec -f` flag to change the rspec formatter. RSpec also offers a way to set the formatter from your specs:
 
 ```ruby
 RSpec.configure do |config|
