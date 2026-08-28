@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 #
 # Author:: HIGUCHI Daisuke (<d-higuchi@creationline.com>)
 #
@@ -21,6 +20,6 @@ module Busser
   module Rspec
 
     # Version string for the Rspec Busser runner plugin
-    VERSION = "0.7.6"
+    VERSION = "0.7.6".freeze
   end
 end

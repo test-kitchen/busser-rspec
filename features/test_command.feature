@@ -4,8 +4,10 @@ Feature: Test command
   I want my tests to run when the rspec runner plugin is installed
 
   Background:
-    Given a test BUSSER_ROOT directory named "busser-rspec-test"
+    Given a non bundler environment
+    And a test BUSSER_ROOT directory named "busser-rspec-test"
     And a sandboxed GEM_HOME directory named "busser-rspec-gem-home"
+    And this plugin is installed from the working tree
     When I successfully run `busser plugin install busser-rspec --force-postinstall`
     Given a suite directory named "rspec"
 
