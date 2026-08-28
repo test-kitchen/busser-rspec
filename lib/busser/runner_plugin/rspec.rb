@@ -48,11 +48,23 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
     ].join(" ")
   end
 
+  # Installs RSpec and bundler onto the machine under test. Runs once, when
+  # Busser installs this plugin.
   postinstall do
     install_gem("rspec", ">= 3.13")
     install_gem("bundler")
   end
 
+  # Runs the suite's specs.
+  #
+  # If the suite ships a Gemfile its gems are installed first, and if it ships a
+  # setup-recipe.rb that recipe is applied with chef-apply to put the machine
+  # into a known state.
+  #
+  # @raise [RuntimeError] if a setup recipe is present but chef-apply is not
+  #   installed, since running the specs against an unprepared machine would
+  #   produce misleading failures
+  # @return [void]
   def test
     rspec_path = suite_path("rspec").to_s
 
@@ -75,7 +87,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
 
       if File.exist?(setup_file)
         unless File.exist?("/opt/chef/bin/chef-apply")
-          raise "You have a chef setup file at #{setup_file}, but /opt/chef/bin/chef-apply does not if exist"
+          raise "You have a chef setup file at #{setup_file}, but /opt/chef/bin/chef-apply does not exist"
         end
 
         run("/opt/chef/bin/chef-apply #{setup_file}")
