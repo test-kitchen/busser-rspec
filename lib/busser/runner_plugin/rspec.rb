@@ -17,12 +17,37 @@
 
 require "busser/runner_plugin"
 require "rubygems" unless defined?(Gem)
+require "shellwords" unless defined?(Shellwords)
 
 # A Busser runner plugin for Rspec.
 #
 # @author Adam Jacob <adam@opscode.com>
 #
 class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
+
+  # Builds the command that runs the suite.
+  #
+  # The suite directory goes on the load path twice -- itself and its lib
+  # subdirectory -- so `require "spec_helper"` works from any spec without a
+  # relative path.
+  #
+  # Every path is quoted. BUSSER_ROOT is user supplied, and an unquoted path
+  # containing a space would be split by the shell into arguments RSpec would
+  # then treat as extra spec paths.
+  #
+  # @param runner [String] path to the runner script
+  # @param suite [String, Pathname] the suite directory holding the specs
+  # @return [String] the command to run
+  def self.runner_command(runner, suite)
+    suite = suite.to_s
+    [
+      Shellwords.escape(runner),
+      "-I", Shellwords.escape(suite),
+      "-I", Shellwords.escape(File.join(suite, "lib")),
+      Shellwords.escape(suite)
+    ].join(" ")
+  end
+
   postinstall do
     install_gem("rspec", ">= 3.13")
     install_gem("bundler")
@@ -57,7 +82,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
       end
 
       runner = File.expand_path(File.join(File.dirname(__FILE__), "..", "rspec", "runner.rb"))
-      run_ruby_script!("#{runner} -I #{rspec_path} -I #{rspec_path}/lib #{rspec_path}")
+      run_ruby_script!(self.class.runner_command(runner, rspec_path))
     end
   end
 end
