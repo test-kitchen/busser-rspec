@@ -3,6 +3,13 @@
 * Additional windows fixes for recent Omnibus Chef
 * Documentation (`README`) updates
 
+## [0.8.1](https://github.com/test-kitchen/busser-rspec/compare/v0.8.0...v0.8.1) (2026-08-28)
+
+
+### Bug Fixes
+
+* quote paths before handing them to a shell ([#30](https://github.com/test-kitchen/busser-rspec/issues/30)) ([9410c75](https://github.com/test-kitchen/busser-rspec/commit/9410c755924525ab436e27beb017b7f43a8453bc))
+
 ## [0.8.0](https://github.com/test-kitchen/busser-rspec/compare/v0.7.6...v0.8.0) (2026-08-28)
 
 
