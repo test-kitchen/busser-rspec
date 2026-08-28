@@ -17,6 +17,7 @@
 
 require "busser/runner_plugin"
 require "rubygems" unless defined?(Gem)
+require "rbconfig" unless defined?(RbConfig)
 require "shellwords" unless defined?(Shellwords)
 
 # A Busser runner plugin for Rspec.
@@ -50,6 +51,36 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
 
   # Installs RSpec and bundler onto the machine under test. Runs once, when
   # Busser installs this plugin.
+  # Builds the chef-apply command for a suite's setup recipe.
+  #
+  # @param setup_file [String, Pathname] path to the setup recipe
+  # @return [String] the command to run
+  def self.chef_apply_command(setup_file)
+    "/opt/chef/bin/chef-apply #{Shellwords.escape(setup_file.to_s)}"
+  end
+
+  # Builds the bundle install command for a suite's own Gemfile.
+  #
+  # bundler is invoked through the Ruby running Busser rather than whatever
+  # `bundle` is on PATH, since on a machine with several Rubies those differ and
+  # the suite's gems would land where the runner cannot see them.
+  #
+  # The --local attempt is a speed optimisation: it finishes immediately when
+  # the gems are already present and fails when it would need the network, so
+  # the second attempt is the fallback.
+  #
+  # @param gemfile [String, Pathname] path to the suite's Gemfile
+  # @return [String] the command to run
+  def self.bundle_install_command(gemfile)
+    bundle = [
+      Shellwords.escape(File.join(RbConfig::CONFIG["bindir"], "ruby")),
+      Shellwords.escape(File.join(Gem.bindir, "bundle")),
+      "install", "--gemfile", Shellwords.escape(gemfile.to_s)
+    ].join(" ")
+
+    "#{bundle} --local || #{bundle}"
+  end
+
   postinstall do
     install_gem("rspec", ">= 3.13")
     install_gem("bundler")
@@ -80,9 +111,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
         # to the internet-enabled version. It's a speed optimization.
         banner("Bundle Installing..")
         ENV["PATH"] = [ENV["PATH"], Gem.bindir, RbConfig::CONFIG["bindir"]].join(File::PATH_SEPARATOR)
-        bundle_exec = "#{File.join(RbConfig::CONFIG["bindir"], "ruby")} " +
-          "#{File.join(Gem.bindir, "bundle")} install --gemfile #{gemfile_path}"
-        run("#{bundle_exec} --local || #{bundle_exec}")
+        run(self.class.bundle_install_command(gemfile_path))
       end
 
       if File.exist?(setup_file)
@@ -90,7 +119,7 @@ class Busser::RunnerPlugin::Rspec < Busser::RunnerPlugin::Base
           raise "You have a chef setup file at #{setup_file}, but /opt/chef/bin/chef-apply does not exist"
         end
 
-        run("/opt/chef/bin/chef-apply #{setup_file}")
+        run(self.class.chef_apply_command(setup_file))
       end
 
       runner = File.expand_path(File.join(File.dirname(__FILE__), "..", "rspec", "runner.rb"))
