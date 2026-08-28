@@ -17,6 +17,7 @@
 
 module Busser
 
+  # Namespace for the RSpec Busser runner plugin.
   module Rspec
 
     # Version string for the Rspec Busser runner plugin
