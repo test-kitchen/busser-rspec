@@ -20,6 +20,6 @@ module Busser
   module Rspec
 
     # Version string for the Rspec Busser runner plugin
-    VERSION = "0.7.6".freeze
+    VERSION = "0.8.0".freeze
   end
 end
