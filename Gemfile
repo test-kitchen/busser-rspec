@@ -2,11 +2,11 @@ source "https://rubygems.org"
 
 gemspec development_group: :test
 group :cookstyle do
-  gem "cookstyle"
+  gem "cookstyle", ">= 9.0.0"
 end
 
 group :test do
-  gem "base64" # cucumber 9.x needs it; not a default gem on Ruby 4.0
-  gem "cucumber", "~> 9.0"
+  gem "base64" # cucumber needs it; not a default gem on Ruby 4.0
+  gem "cucumber", ">= 11.1"
   gem "rake"
 end

@@ -4,7 +4,7 @@ require "busser/rspec/version"
 
 Gem::Specification.new do |spec|
   spec.name = "busser-rspec"
-  spec.required_ruby_version = ">= 3.1"
+  spec.required_ruby_version = ">= 3.2"
   spec.version       = Busser::Rspec::VERSION
   spec.authors       = ["Adam Jacob"]
   spec.email         = ["adam@opscode.com"]
@@ -17,11 +17,9 @@ Gem::Specification.new do |spec|
   spec.executables   = []
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "busser"
+  spec.add_dependency "busser", ">= 0.9.0"
 
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency "chef"
-
+  spec.add_development_dependency "rspec", ">= 3.13"
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "aruba"
+  spec.add_development_dependency "aruba", ">= 2.0"
 end
