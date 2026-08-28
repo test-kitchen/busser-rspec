@@ -15,7 +15,7 @@ describe Busser::RunnerPlugin::Rspec do
         "/gems/busser-rspec/lib/busser/rspec/runner.rb",
         "-I", "/opt/busser/suites/rspec",
         "-I", "/opt/busser/suites/rspec/lib",
-        "/opt/busser/suites/rspec",
+        "/opt/busser/suites/rspec"
       ]
     end
 
@@ -33,7 +33,7 @@ describe Busser::RunnerPlugin::Rspec do
         "/a/runner.rb",
         "-I", "/tmp/my tests/rspec",
         "-I", "/tmp/my tests/rspec/lib",
-        "/tmp/my tests/rspec",
+        "/tmp/my tests/rspec"
       ]
     end
 
